@@ -16,12 +16,19 @@ class MyCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var heightConstraint: NSLayoutConstraint!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
+    var representedId: String?
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         let screenWidth = UIScreen.main.bounds.size.width
-        widthConstraint.constant = (screenWidth / 3) - 2
+        widthConstraint.constant = (screenWidth / 3) - 10
         activityIndicator.color = .black
         activityIndicator.isHidden = true
+    }
+    
+    func configure(with data: DisplayData?) {
+        guard let image = data?.image else { return }
+        userImage.image = image
     }
 
 }
