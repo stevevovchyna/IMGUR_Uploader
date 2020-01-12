@@ -17,6 +17,7 @@ class MyCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     var representedId: String?
+    var isLoading: Bool = false
     
     override func awakeFromNib() {
         super.awakeFromNib()

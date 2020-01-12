@@ -36,6 +36,11 @@ extension RootViewController: UICollectionViewDelegate {
         let cell = collectionView.cellForItem(at: indexPath) as! MyCollectionViewCell
         cell.activityIndicator.isHidden = !cell.activityIndicator.isHidden
         cell.activityIndicator.isAnimating ? cell.activityIndicator.stopAnimating() : cell.activityIndicator.startAnimating()
+        guard let image = cell.userImage.image else { return }
+        
+        uploadImage(image)
+        
+        // TODO : cell must remember that there's an activity going on it
     }
     
 }
