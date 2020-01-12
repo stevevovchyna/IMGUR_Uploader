@@ -23,6 +23,10 @@
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="x5g-wc-Xyd">
                                 <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
                             </imageView>
+                            <activityIndicatorView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="pkN-1m-0fl">
+                                <rect key="frame" x="31.5" y="31.5" width="37" height="37"/>
+                                <color key="color" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
@@ -32,6 +36,8 @@
                             <constraint firstAttribute="bottom" secondItem="x5g-wc-Xyd" secondAttribute="bottom" id="TxJ-8E-5rt"/>
                             <constraint firstAttribute="height" priority="999" constant="100" id="VGe-E0-nrO"/>
                             <constraint firstItem="x5g-wc-Xyd" firstAttribute="leading" secondItem="7Hg-w0-Pp9" secondAttribute="leading" id="WBZ-22-NGh"/>
+                            <constraint firstItem="pkN-1m-0fl" firstAttribute="centerY" secondItem="7Hg-w0-Pp9" secondAttribute="centerY" id="mHj-uu-7fJ"/>
+                            <constraint firstItem="pkN-1m-0fl" firstAttribute="centerX" secondItem="7Hg-w0-Pp9" secondAttribute="centerX" id="vEf-0Q-iOC"/>
                         </constraints>
                     </view>
                 </subviews>
@@ -44,6 +50,7 @@
             </constraints>
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
             <connections>
+                <outlet property="activityIndicator" destination="pkN-1m-0fl" id="pk3-0p-e5j"/>
                 <outlet property="backView" destination="7Hg-w0-Pp9" id="OZy-qc-edn"/>
                 <outlet property="heightConstraint" destination="VGe-E0-nrO" id="qIa-x4-9XN"/>
                 <outlet property="userImage" destination="x5g-wc-Xyd" id="geA-Az-eHT"/>

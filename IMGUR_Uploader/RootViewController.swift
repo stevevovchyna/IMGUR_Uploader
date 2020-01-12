@@ -60,6 +60,16 @@ extension RootViewController: UICollectionViewDataSource {
         }
         return cell
     }
+    
+}
+
+extension RootViewController: UICollectionViewDelegate {
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let cell = collectionView.cellForItem(at: indexPath) as! MyCollectionViewCell
+        cell.activityIndicator.isHidden = !cell.activityIndicator.isHidden
+    }
+    
 }
 
 extension UIImageView {
