@@ -28,7 +28,9 @@
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="x5g-wc-Xyd" secondAttribute="trailing" id="1En-OC-G19"/>
                             <constraint firstItem="x5g-wc-Xyd" firstAttribute="top" secondItem="7Hg-w0-Pp9" secondAttribute="top" id="Ctd-NH-NZN"/>
+                            <constraint firstAttribute="width" priority="999" constant="100" id="Li9-wd-yX3"/>
                             <constraint firstAttribute="bottom" secondItem="x5g-wc-Xyd" secondAttribute="bottom" id="TxJ-8E-5rt"/>
+                            <constraint firstAttribute="height" priority="999" constant="100" id="VGe-E0-nrO"/>
                             <constraint firstItem="x5g-wc-Xyd" firstAttribute="leading" secondItem="7Hg-w0-Pp9" secondAttribute="leading" id="WBZ-22-NGh"/>
                         </constraints>
                     </view>
@@ -42,9 +44,12 @@
             </constraints>
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
             <connections>
+                <outlet property="backView" destination="7Hg-w0-Pp9" id="OZy-qc-edn"/>
+                <outlet property="heightConstraint" destination="VGe-E0-nrO" id="qIa-x4-9XN"/>
                 <outlet property="userImage" destination="x5g-wc-Xyd" id="geA-Az-eHT"/>
+                <outlet property="widthConstraint" destination="Li9-wd-yX3" id="s16-6Q-LNR"/>
             </connections>
-            <point key="canvasLocation" x="132" y="124"/>
+            <point key="canvasLocation" x="131.8840579710145" y="123.88392857142857"/>
         </collectionViewCell>
     </objects>
 </document>
