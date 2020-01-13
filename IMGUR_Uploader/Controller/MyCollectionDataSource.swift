@@ -14,6 +14,7 @@ class CustomDataSource: NSObject, UICollectionViewDataSource, UICollectionViewDa
     // MARK: Properties
     
     let upload = ImageUploader()
+    let linkManager = LinkManager()
     
     class Model {
         var allPhotos: PHFetchResult<PHAsset>? = nil
@@ -109,7 +110,11 @@ class CustomDataSource: NSObject, UICollectionViewDataSource, UICollectionViewDa
                 case .success(let link):
                     print(link)
                     DispatchQueue.main.async {
+                        let newLink = self.linkManager.newLink()
+                        newLink.link = link
+                        self.linkManager.save()
                         self.triggerActivityIndicator(for: cell, with: true)
+                        
                     }
                 }
             }

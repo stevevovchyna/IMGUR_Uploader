@@ -10,12 +10,16 @@ import UIKit
 
 class LinksViewController: UIViewController {
 
+    let linkManager = LinkManager()
+    var allLinks: [Link] = []
+    
+    
     @IBOutlet weak var tableView: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        allLinks = linkManager.getAllLinks()
 
-        // Do any additional setup after loading the view.
     }
 
 }
@@ -23,12 +27,13 @@ class LinksViewController: UIViewController {
 extension LinksViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
+        return allLinks.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "linkCell", for: indexPath)
-        cell.textLabel?.text = "some kind of link here"
+        guard let link = allLinks[indexPath.row].link else { return cell }
+        cell.textLabel?.text = link
         return cell
     }
     
@@ -37,7 +42,9 @@ extension LinksViewController: UITableViewDataSource {
 extension LinksViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
+        guard let link = allLinks[indexPath.row].link, let url = URL(string: link) else { return }
+        tableView.cellForRow(at: indexPath)?.isSelected = false
+        UIApplication.shared.open(url)
     }
     
 }

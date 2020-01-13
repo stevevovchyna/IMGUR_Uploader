@@ -15,6 +15,8 @@
 		1005E55923CB79780059DAA0 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1005E55823CB79780059DAA0 /* Utils.swift */; };
 		1005E55B23CB92A40059DAA0 /* Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1005E55A23CB92A40059DAA0 /* Networking.swift */; };
 		1005E55D23CC85180059DAA0 /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1005E55C23CC85180059DAA0 /* Alert.swift */; };
+		1005E55F23CCC5280059DAA0 /* LinksManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1005E55E23CCC5280059DAA0 /* LinksManager.swift */; };
+		1005E56123CCC54B0059DAA0 /* Link.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1005E56023CCC54B0059DAA0 /* Link.swift */; };
 		10CD655A23CA22EE00A7CF1C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10CD655923CA22EE00A7CF1C /* AppDelegate.swift */; };
 		10CD655C23CA22EE00A7CF1C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10CD655B23CA22EE00A7CF1C /* SceneDelegate.swift */; };
 		10CD656123CA22EE00A7CF1C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 10CD655F23CA22EE00A7CF1C /* Main.storyboard */; };
@@ -35,6 +37,8 @@
 		1005E55823CB79780059DAA0 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		1005E55A23CB92A40059DAA0 /* Networking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Networking.swift; sourceTree = "<group>"; };
 		1005E55C23CC85180059DAA0 /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
+		1005E55E23CCC5280059DAA0 /* LinksManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinksManager.swift; sourceTree = "<group>"; };
+		1005E56023CCC54B0059DAA0 /* Link.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Link.swift; sourceTree = "<group>"; };
 		10CD655623CA22EE00A7CF1C /* IMGUR_Uploader.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IMGUR_Uploader.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		10CD655923CA22EE00A7CF1C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		10CD655B23CA22EE00A7CF1C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -78,6 +82,8 @@
 				1005E55823CB79780059DAA0 /* Utils.swift */,
 				1005E55A23CB92A40059DAA0 /* Networking.swift */,
 				1005E55C23CC85180059DAA0 /* Alert.swift */,
+				1005E55E23CCC5280059DAA0 /* LinksManager.swift */,
+				1005E56023CCC54B0059DAA0 /* Link.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -205,8 +211,10 @@
 				1005E55723CB50090059DAA0 /* DisplayData.swift in Sources */,
 				10CD655A23CA22EE00A7CF1C /* AppDelegate.swift in Sources */,
 				1005E55323CB4F590059DAA0 /* AsyncFetcher.swift in Sources */,
+				1005E56123CCC54B0059DAA0 /* Link.swift in Sources */,
 				1005E55923CB79780059DAA0 /* Utils.swift in Sources */,
 				10CD656423CA22EE00A7CF1C /* IMGUR_Uploader.xcdatamodeld in Sources */,
+				1005E55F23CCC5280059DAA0 /* LinksManager.swift in Sources */,
 				1005E54D23CB1DCA0059DAA0 /* LinksViewController.swift in Sources */,
 				10CD655C23CA22EE00A7CF1C /* SceneDelegate.swift in Sources */,
 			);
