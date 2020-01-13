@@ -10,8 +10,10 @@ import UIKit
 import Photos
 
 /// - Tag: CustomDataSource
-class CustomDataSource: NSObject, UICollectionViewDataSource, UICollectionViewDataSourcePrefetching {
+class CustomDataSource: NSObject, UICollectionViewDataSource, UICollectionViewDataSourcePrefetching, UICollectionViewDelegate {
     // MARK: Properties
+    
+    let upload = ImageUploader()
     
     class Model {
         var allPhotos: PHFetchResult<PHAsset>? = nil
@@ -83,6 +85,41 @@ class CustomDataSource: NSObject, UICollectionViewDataSource, UICollectionViewDa
             let id = photos.object(at: indexPath.row).localIdentifier
             asyncFetcher.cancelFetch(id)
         }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let cell = collectionView.cellForItem(at: indexPath) as? MyCollectionViewCell else { return }
+        
+        triggerActivityIndicator(for: cell, with: false)
+        
+        guard let photos = models.allPhotos else { return }
+        let id = photos.object(at: indexPath.row).localIdentifier
+        
+        fetchImage(with: id) { image in
+            
+            self.upload.uploadImage(image) { result in
+                
+                switch result {
+                case .error(let err):
+                    print(err)
+                    DispatchQueue.main.async {
+                        self.triggerActivityIndicator(for: cell, with: true)
+                        Alert.showAlert(with: "Error", message: err)
+                    }
+                case .success(let link):
+                    print(link)
+                    DispatchQueue.main.async {
+                        self.triggerActivityIndicator(for: cell, with: true)
+//                        Alert.showAlert(with: "Success", message: link)
+                    }
+                }
+            }
+        }
+    }
+    
+    private func triggerActivityIndicator(for cell: MyCollectionViewCell, with trigger: Bool) {
+        cell.activityIndicator.isHidden = trigger
+        trigger ? cell.activityIndicator.stopAnimating() : cell.activityIndicator.startAnimating()
     }
 }
 

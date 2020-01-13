@@ -12,8 +12,7 @@ import Photos
 class RootViewController: UIViewController {
 
     @IBOutlet weak var collectionView: UICollectionView!
-    
-    var allPhotos : PHFetchResult<PHAsset>? = nil
+
     private let dataSource = CustomDataSource()
     
     override func viewDidLoad() {
@@ -27,22 +26,8 @@ class RootViewController: UIViewController {
         }
         collectionView.dataSource = dataSource
         collectionView.prefetchDataSource = dataSource
+        collectionView.delegate = dataSource
     }
-}
-
-extension RootViewController: UICollectionViewDelegate {
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let cell = collectionView.cellForItem(at: indexPath) as! MyCollectionViewCell
-        cell.activityIndicator.isHidden = !cell.activityIndicator.isHidden
-        cell.activityIndicator.isAnimating ? cell.activityIndicator.stopAnimating() : cell.activityIndicator.startAnimating()
-        guard let image = cell.userImage.image else { return }
-        
-        uploadImage(image)
-        
-        // TODO : cell must remember that there's an activity going on it
-    }
-    
 }
 
 //MARK:- private methods
@@ -57,16 +42,15 @@ extension RootViewController {
                 break
             case .denied, .restricted:
                 DispatchQueue.main.async {
-                    presentAlert(text: "Please provide Photo Library access in your Settings app", in: self)
+                    Alert.showAlert(on: self, with: "Error", message: "Please provide Photo Library access in your Settings app")
                 }
             case .notDetermined:
                 DispatchQueue.main.async {
-                    presentAlert(text: "Please provide Photo Library access in your Settings app", in: self)
+                    Alert.showAlert(on: self, with: "Error", message: "Please provide Photo Library access in your Settings app")
                 }
             default:
                 break
             }
         }
     }
-    
 }
