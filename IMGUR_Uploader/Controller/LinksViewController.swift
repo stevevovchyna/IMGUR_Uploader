@@ -47,4 +47,17 @@ extension LinksViewController: UITableViewDelegate {
         UIApplication.shared.open(url)
     }
     
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            linkManager.removeLink(article: allLinks[indexPath.row])
+            linkManager.save()
+            allLinks = linkManager.getAllLinks()
+            tableView.deleteRows(at: [indexPath], with: .fade)
+        }
+    }
+    
 }
