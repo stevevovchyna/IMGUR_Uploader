@@ -27,6 +27,21 @@ class RootViewController: UIViewController {
         collectionView.dataSource = dataSource
         collectionView.prefetchDataSource = dataSource
         collectionView.delegate = dataSource
+        NotificationCenter.default.addObserver(self, selector: #selector(presentAlert(message:)), name: NSNotification.Name(rawValue: "alert"), object: nil)
+
+    }
+    
+    @objc func presentAlert(message: Notification) {
+        if self.viewIfLoaded?.window != nil {
+            guard let dic = message.object as? Dictionary<String, String>, let text = dic["message"]  else {
+                return
+            }
+            let alert = UIAlertController(title: "Error", message: text, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            DispatchQueue.main.async {
+                self.present(alert, animated: true, completion: nil)
+            }
+        }
     }
 }
 
@@ -54,3 +69,4 @@ extension RootViewController {
         }
     }
 }
+

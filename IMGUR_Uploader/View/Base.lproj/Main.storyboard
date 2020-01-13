@@ -24,10 +24,10 @@
             </objects>
             <point key="canvasLocation" x="-535" y="212"/>
         </scene>
-        <!--IMGUR Uploader-->
+        <!--RootViewController-->
         <scene sceneID="6o1-GY-xWG">
             <objects>
-                <viewController id="5SW-48-gZ3" customClass="RootViewController" customModule="IMGUR_Uploader" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="RootViewController" title="RootViewController" id="5SW-48-gZ3" customClass="RootViewController" customModule="IMGUR_Uploader" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="9Lc-br-rkn">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

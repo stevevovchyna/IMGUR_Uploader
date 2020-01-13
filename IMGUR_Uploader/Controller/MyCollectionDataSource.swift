@@ -27,7 +27,7 @@ class CustomDataSource: NSObject, UICollectionViewDataSource, UICollectionViewDa
     let models = Model()
 
     private let asyncFetcher = AsyncFetcher()
-
+    
     // MARK:- UICollectionViewDataSource
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -104,13 +104,12 @@ class CustomDataSource: NSObject, UICollectionViewDataSource, UICollectionViewDa
                     print(err)
                     DispatchQueue.main.async {
                         self.triggerActivityIndicator(for: cell, with: true)
-                        Alert.showAlert(with: "Error", message: err)
+                        NotificationCenter.default.post(name: Notification.Name(rawValue: "alert"), object: ["message": err])
                     }
                 case .success(let link):
                     print(link)
                     DispatchQueue.main.async {
                         self.triggerActivityIndicator(for: cell, with: true)
-//                        Alert.showAlert(with: "Success", message: link)
                     }
                 }
             }
