@@ -18,6 +18,8 @@ class AsyncFetcher {
 
     init() {
         serialAccessQueue.maxConcurrentOperationCount = 1
+        cache.totalCostLimit = 1024 * 1024 * 300
+        cache.countLimit = 10000
     }
 
     func fetchAsync(_ identifier: String, with size: CGSize, completion: ((DisplayData?) -> Void)? = nil) {
@@ -30,14 +32,13 @@ class AsyncFetcher {
         }
     }
 
-
-//     Returns the previously fetched data for a specified `UUID`.
+//     Returns the previously fetched data for a specified `ID`.
     func fetchedData(for identifier: String) -> DisplayData? {
         return cache.object(forKey: identifier as NSString)
     }
 
 
-//     Cancels any enqueued asychronous fetches for a specified `UUID`. Completion handlers are not called if a fetch is canceled.
+//     Cancels any enqueued asychronous fetches for a specified `ID`. Completion handlers are not called if a fetch is canceled.
     func cancelFetch(_ identifier: String) {
         serialAccessQueue.addOperation {
             self.fetchQueue.isSuspended = true
@@ -53,7 +54,7 @@ class AsyncFetcher {
     // MARK: Convenience
     
 //     Begins fetching data for the provided `identifier` invoking the associated completion handler when complete.
-      private func fetchData(for identifier: String, with size: CGSize) {
+    private func fetchData(for identifier: String, with size: CGSize) {
         guard operation(for: identifier) == nil else { return }
         
         if let data = fetchedData(for: identifier) {
@@ -73,7 +74,7 @@ class AsyncFetcher {
         }
     }
 
-//     Returns any enqueued `ObjectFetcherOperation` for a specified `UUID`.
+//     Returns any enqueued `ObjectFetcherOperation` for a specified `ID`.
      private func operation(for identifier: String) -> AsyncFetcherOperation? {
         for case let fetchOperation as AsyncFetcherOperation in fetchQueue.operations
             where !fetchOperation.isCancelled && fetchOperation.identifier == identifier {

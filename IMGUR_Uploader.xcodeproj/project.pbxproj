@@ -76,14 +76,14 @@
 		1005E55123CB4F430059DAA0 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				1005E55C23CC85180059DAA0 /* Alert.swift */,
 				1005E55223CB4F590059DAA0 /* AsyncFetcher.swift */,
 				1005E55423CB4F920059DAA0 /* AsyncFetcherOperation.swift */,
 				1005E55623CB50090059DAA0 /* DisplayData.swift */,
-				1005E55823CB79780059DAA0 /* Utils.swift */,
-				1005E55A23CB92A40059DAA0 /* Networking.swift */,
-				1005E55C23CC85180059DAA0 /* Alert.swift */,
 				1005E55E23CCC5280059DAA0 /* LinksManager.swift */,
 				1005E56023CCC54B0059DAA0 /* Link.swift */,
+				1005E55A23CB92A40059DAA0 /* Networking.swift */,
+				1005E55823CB79780059DAA0 /* Utils.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";

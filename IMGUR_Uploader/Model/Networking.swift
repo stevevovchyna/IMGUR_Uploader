@@ -66,8 +66,8 @@ class DownloadOperation : Operation {
 
 class ImageUploader {
     let queue = OperationQueue()
-    let urlString = "https://api.imgur.com/3/upload"
-    let clientID = "4c87f4335da16e5"
+    private let urlString = "https://api.imgur.com/3/upload"
+    private let clientID = "4c87f4335da16e5"
     
     init() {
         queue.maxConcurrentOperationCount = 1

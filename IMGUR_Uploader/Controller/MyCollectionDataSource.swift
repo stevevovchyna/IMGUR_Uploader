@@ -21,6 +21,7 @@ class CustomDataSource: NSObject, UICollectionViewDataSource, UICollectionViewDa
         
         init() {
             let fetchOptions = PHFetchOptions()
+            fetchOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
             self.allPhotos = PHAsset.fetchAssets(with: PHAssetMediaType.image, options: fetchOptions)
         }
     }
@@ -46,6 +47,7 @@ class CustomDataSource: NSObject, UICollectionViewDataSource, UICollectionViewDa
         cell.representedId = id
         // Checking if asyncFetcher has already fetched data for the specified identifier.
         if let fetchedData = asyncFetcher.fetchedData(for: id) {
+//            print(id)
             cell.configure(with: fetchedData)
         } else {
             cell.configure(with: nil)
@@ -69,12 +71,13 @@ class CustomDataSource: NSObject, UICollectionViewDataSource, UICollectionViewDa
     func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
         // Begin asynchronously fetching data for the requested index paths.
         for indexPath in indexPaths {
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "imageCell", for: indexPath) as? MyCollectionViewCell else {
-                fatalError("Expected `\(MyCollectionViewCell.self)` type for reuseIdentifier imageCell. Check the configuration in Main.storyboard.")
-            }
+            guard let cell = collectionView.cellForItem(at: indexPath) as? MyCollectionViewCell else { return }
+            var size = cell.userImage.frame.size
+            size.width *= 2
+            size.height *= 2
             guard let photos = models.allPhotos else { return }
             let id = photos.object(at: indexPath.row).localIdentifier
-            asyncFetcher.fetchAsync(id, with: cell.userImage.frame.size)
+            asyncFetcher.fetchAsync(id, with: size)
         }
     }
 
@@ -99,22 +102,18 @@ class CustomDataSource: NSObject, UICollectionViewDataSource, UICollectionViewDa
         fetchImage(with: id) { image in
             
             self.upload.uploadImage(image) { result in
-                
                 switch result {
                 case .error(let err):
-                    print(err)
                     DispatchQueue.main.async {
                         self.triggerActivityIndicator(for: cell, with: true)
                         NotificationCenter.default.post(name: Notification.Name(rawValue: "alert"), object: ["message": err])
                     }
                 case .success(let link):
-                    print(link)
                     DispatchQueue.main.async {
                         let newLink = self.linkManager.newLink()
                         newLink.link = link
                         self.linkManager.save()
                         self.triggerActivityIndicator(for: cell, with: true)
-                        
                     }
                 }
             }
