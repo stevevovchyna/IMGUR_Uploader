@@ -17,8 +17,8 @@ public class LinkManager : NSObject {
         let bundle = Bundle(identifier: "com.stevevovchyna.IMGUR-Uploader")
         
         guard let url = bundle?.url(forResource: "IMGUR_Uploader", withExtension: "momd") else { fatalError("Error loading model from the bundle") }
-        
-        guard let managedObjectModel = NSManagedObjectModel(contentsOf: url) else { fatalError("Couldn't initialize managed object model from set url") }
+        let url1 = url.appendingPathComponent("IMGUR_Uploader.mom")
+        guard let managedObjectModel = NSManagedObjectModel(contentsOf: url1) else { fatalError("Couldn't initialize managed object model from set url") }
         
         let persistentStoreCoordinator = NSPersistentStoreCoordinator(managedObjectModel: managedObjectModel)
         
