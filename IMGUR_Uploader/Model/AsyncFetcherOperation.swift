@@ -23,12 +23,22 @@ class AsyncFetcherOperation: Operation {
 
     override func main() {
         guard !isCancelled else { return }
-        let data = DisplayData()
+        // setting options parameters for the request
         let options = PHImageRequestOptions()
-        options.version = .original
+        options.isNetworkAccessAllowed = true
+        options.deliveryMode = .highQualityFormat
+        options.version = .current
+        options.resizeMode = .fast
         options.isSynchronous = true
-        let asset = PHAsset.fetchAssets(withLocalIdentifiers: [identifier], options: .none)
+        
+        let fetchOptions = PHFetchOptions()
+        fetchOptions.fetchLimit = 1
+        fetchOptions.includeAllBurstAssets = false
+        fetchOptions.includeHiddenAssets = false
+        
+        let asset = PHAsset.fetchAssets(withLocalIdentifiers: [identifier], options: fetchOptions)
         PHImageManager.default().requestImage(for: asset.firstObject!, targetSize: size, contentMode: .aspectFit, options: options) { image, _ in
+            let data = DisplayData()
             guard let image = image else { return }
             data.image = image
             self.fetchedData = data

@@ -18,10 +18,19 @@ class LinksViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        // obtaining all the links available on the device
         allLinks = linkManager.getAllLinks()
-
     }
 
+    // button created for convenience - to delete all the links saved on the device
+    @IBAction func deleteAll(_ sender: UIBarButtonItem) {
+        for link in allLinks {
+            linkManager.removeLink(article: link)
+        }
+        linkManager.save()
+        allLinks = linkManager.getAllLinks()
+        tableView.reloadData()
+    }
 }
 
 extension LinksViewController: UITableViewDataSource {
@@ -30,6 +39,7 @@ extension LinksViewController: UITableViewDataSource {
         return allLinks.count
     }
     
+    // populate the table with the links from the `allLinks` array
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "linkCell", for: indexPath)
         guard let link = allLinks[indexPath.row].link else { return cell }
@@ -41,16 +51,18 @@ extension LinksViewController: UITableViewDataSource {
 
 extension LinksViewController: UITableViewDelegate {
     
+    // open in browser on tap
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let link = allLinks[indexPath.row].link, let url = URL(string: link) else { return }
         tableView.cellForRow(at: indexPath)?.isSelected = false
         UIApplication.shared.open(url)
     }
     
+    // swipe to delete functionality
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
-    
+
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             linkManager.removeLink(article: allLinks[indexPath.row])
@@ -59,5 +71,7 @@ extension LinksViewController: UITableViewDelegate {
             tableView.deleteRows(at: [indexPath], with: .fade)
         }
     }
+    
+    
     
 }

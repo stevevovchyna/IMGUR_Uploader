@@ -108,7 +108,13 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="k40-XA-w2W"/>
                     </view>
-                    <navigationItem key="navigationItem" id="dDs-wt-5IB"/>
+                    <navigationItem key="navigationItem" id="dDs-wt-5IB">
+                        <barButtonItem key="rightBarButtonItem" title="delete all" id="sAN-U2-9xU">
+                            <connections>
+                                <action selector="deleteAll:" destination="NXw-uj-2p0" id="0qx-qw-haO"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="tableView" destination="Yt7-Lz-cXd" id="6KH-Ox-rkP"/>
                     </connections>

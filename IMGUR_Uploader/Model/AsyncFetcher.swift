@@ -18,8 +18,6 @@ class AsyncFetcher {
 
     init() {
         serialAccessQueue.maxConcurrentOperationCount = 1
-        cache.totalCostLimit = 1024 * 1024 * 300
-        cache.countLimit = 10000
     }
 
     func fetchAsync(_ identifier: String, with size: CGSize, completion: ((DisplayData?) -> Void)? = nil) {

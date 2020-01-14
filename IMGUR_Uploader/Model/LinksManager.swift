@@ -42,7 +42,7 @@ public class LinkManager : NSObject {
         return NSEntityDescription.insertNewObject(forEntityName: "Link", into: context) as! Link
     }
     
-    func fetchData(predicate : NSPredicate) -> [Link] {
+    private func fetchData(predicate : NSPredicate) -> [Link] {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Link")
         
         fetchRequest.predicate = predicate

@@ -13,16 +13,22 @@ import Photos
 class CustomDataSource: NSObject, UICollectionViewDataSource, UICollectionViewDataSourcePrefetching, UICollectionViewDelegate {
     // MARK: Properties
     
-    let upload = ImageUploader()
+    let uploadManager = ImageUploader()
     let linkManager = LinkManager()
+    var allOperations: [String] = []
     
+    // model that fetches list of all images available
     class Model {
+        
         var allPhotos: PHFetchResult<PHAsset>? = nil
+        var size: CGSize = CGSize(width: 0, height: 0)
         
         init() {
             let fetchOptions = PHFetchOptions()
             fetchOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
             self.allPhotos = PHAsset.fetchAssets(with: PHAssetMediaType.image, options: fetchOptions)
+            let screenWidth = UIScreen.main.bounds.size.width
+            size = CGSize(width: screenWidth / 3, height: screenWidth / 3)
         }
     }
     
@@ -39,26 +45,28 @@ class CustomDataSource: NSObject, UICollectionViewDataSource, UICollectionViewDa
 
     /// - Tag: CellForItemAt
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "imageCell", for: indexPath) as? MyCollectionViewCell else {
             fatalError("Expected `\(MyCollectionViewCell.self)` type for reuseIdentifier imageCell. Check the configuration in Main.storyboard.")
         }
+        // obtaining imageID needed for futher process
         guard let photos = models.allPhotos else { return cell }
         let id = photos.object(at: indexPath.row).localIdentifier
         cell.representedId = id
+        
+        let trigger = allOperations.contains(id) ? false : true
         // Checking if asyncFetcher has already fetched data for the specified identifier.
         if let fetchedData = asyncFetcher.fetchedData(for: id) {
-//            print(id)
             cell.configure(with: fetchedData)
+            cell.isLoading = !trigger
         } else {
             cell.configure(with: nil)
-            var size = cell.userImage.frame.size
-            size.width *= 2
-            size.height *= 2
-            asyncFetcher.fetchAsync(id, with: size) { fetchedData in
+            asyncFetcher.fetchAsync(id, with: models.size) { fetchedData in
                 DispatchQueue.main.async {
               // checking if cell has been recycled by the collection view to represent other data.
                     guard cell.representedId == id else { return }
                     cell.configure(with: fetchedData)
+                    cell.isLoading = !trigger
                 }
             }
         }
@@ -70,14 +78,10 @@ class CustomDataSource: NSObject, UICollectionViewDataSource, UICollectionViewDa
     /// - Tag: Prefetching
     func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
         // Begin asynchronously fetching data for the requested index paths.
+        guard let photos = models.allPhotos else { return }
         for indexPath in indexPaths {
-            guard let cell = collectionView.cellForItem(at: indexPath) as? MyCollectionViewCell else { return }
-            var size = cell.userImage.frame.size
-            size.width *= 2
-            size.height *= 2
-            guard let photos = models.allPhotos else { return }
             let id = photos.object(at: indexPath.row).localIdentifier
-            asyncFetcher.fetchAsync(id, with: size)
+            asyncFetcher.fetchAsync(id, with: models.size)
         }
     }
 
@@ -93,36 +97,39 @@ class CustomDataSource: NSObject, UICollectionViewDataSource, UICollectionViewDa
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let cell = collectionView.cellForItem(at: indexPath) as? MyCollectionViewCell else { return }
-        
-        triggerActivityIndicator(for: cell, with: false)
-        
+        cell.isLoading = true
+        //getting needed image ID
         guard let photos = models.allPhotos else { return }
         let id = photos.object(at: indexPath.row).localIdentifier
-        
+        cell.representedId = id
+        // making sure user dosen't click on the image too many times - one upload per picture, please
+        guard !allOperations.contains(id) else { return }
+        //adding our operation to the array of current operations to track them
+        allOperations.append(id)
+        // getting an image from the phot library
         fetchImage(with: id) { image in
-            
-            self.upload.uploadImage(image) { result in
+            // uploading image
+            self.uploadManager.uploadImage(image) { result in
                 switch result {
                 case .error(let err):
                     DispatchQueue.main.async {
-                        self.triggerActivityIndicator(for: cell, with: true)
                         NotificationCenter.default.post(name: Notification.Name(rawValue: "alert"), object: ["message": err])
                     }
                 case .success(let link):
                     DispatchQueue.main.async {
+                        // saving the link to the local storage
                         let newLink = self.linkManager.newLink()
                         newLink.link = link
                         self.linkManager.save()
-                        self.triggerActivityIndicator(for: cell, with: true)
                     }
                 }
+                // checking if the cell haven't been used
+                guard cell.representedId == id else { return }
+                cell.isLoading = false
+                self.allOperations = self.allOperations.filter{ $0 != id }
+                collectionView.reloadItems(at: [indexPath])
             }
         }
-    }
-    
-    private func triggerActivityIndicator(for cell: MyCollectionViewCell, with trigger: Bool) {
-        cell.activityIndicator.isHidden = trigger
-        trigger ? cell.activityIndicator.stopAnimating() : cell.activityIndicator.startAnimating()
     }
 }
 
